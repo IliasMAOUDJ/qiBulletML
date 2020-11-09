@@ -138,7 +138,7 @@ def main():
             elif all(laser >= 2.7 for laser in laser_list_front): #If there is no object close in front of it, go ahead
                 pepper.moveTo(0.25,0,0,frame =2, _async=True)
             else:
-                pepper.stopMove()
+                #pepper.stopMove()
                 pass
                 
     except KeyboardInterrupt:
