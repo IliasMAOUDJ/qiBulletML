@@ -6,7 +6,6 @@ import pybullet as p
 import sys
 import random
 import pyntcloud as pc
-import yolo
 
 def showCam(robot, name, handle) :
    img = robot.getCameraFrame(handle)
@@ -28,8 +27,47 @@ def main():
     cube_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[0.25,0.25,0.25])
     cube_body = p.createMultiBody( baseMass=0, baseCollisionShapeIndex=cube_collision,baseVisualShapeIndex=cube_visual, basePosition = [6,0, 0.725])
 
+    #Balls
+    for i in range(15):
+        r = random.random()
+        g = random.random()
+        b = random.random()
+        sphere_visual = p.createVisualShape(p.GEOM_SPHERE, radius=0.2, rgbaColor = [r,g,b,1])
+        sphere_collision = p.createCollisionShape(p.GEOM_SPHERE)
+        x= random.randint(0,18)
+        y = random.randint(0,18)
+        z = random.randint(0,2)
+        sphere_body = p.createMultiBody(baseMass=0, baseCollisionShapeIndex= sphere_collision, baseVisualShapeIndex=sphere_visual, basePosition = [x-9,y-9,z+0.2])
 
- 
+
+    for i in range(15):
+        r = random.random()
+        g = random.random()
+        b = random.random()
+        cube_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[0.125,0.125,0.125], rgbaColor = [r,g,b,1])
+        cube_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[0.25,0.25,0.25])
+        x= random.randint(0,18)
+        y = random.randint(0,18)
+        z = random.randint(0,2)
+        cube_body = p.createMultiBody( baseMass=0, baseCollisionShapeIndex=cube_collision,baseVisualShapeIndex=cube_visual, basePosition = [x,y,z])
+
+    #Walls
+    cube_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[10,0.2,2])
+    cube_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[10,0.2,2])
+    cube_body = p.createMultiBody( baseMass=0, baseCollisionShapeIndex=cube_collision,baseVisualShapeIndex=cube_visual, basePosition = [0,10, 1])
+
+    cube_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[10,0.2,2])
+    cube_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[10,0.2,2])
+    cube_body = p.createMultiBody( baseMass=0, baseCollisionShapeIndex=cube_collision,baseVisualShapeIndex=cube_visual, basePosition = [0,-10,1])
+
+    cube_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[0.2,10,2])
+    cube_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[0.2,10,2])
+    cube_body = p.createMultiBody( baseMass=0, baseCollisionShapeIndex=cube_collision,baseVisualShapeIndex=cube_visual, basePosition = [10,0,1])
+
+    cube_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[0.2,10,2])
+    cube_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[0.2,10,2])
+    cube_body = p.createMultiBody( baseMass=0, baseCollisionShapeIndex=cube_collision,baseVisualShapeIndex=cube_visual, basePosition = [-10,0,1])
+
     #Spawn Objet 3D
     p.loadURDF("./table/table.urdf", basePosition = [6,0,0], globalScaling = 1)
     p.loadURDF("./chair/chair.urdf", basePosition = [7,0,0], globalScaling = 1)
