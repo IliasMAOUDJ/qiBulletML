@@ -8,6 +8,7 @@ class Camera(threading.Thread):
         self.pepper = pepper
         self.id_camera = id_camera
         self.killed = False
+        self.circle_found = False
 
     def kill(self):
         self.killed = True
@@ -16,7 +17,7 @@ class Camera(threading.Thread):
         filename=self.id_camera+"_camera.png"
         img = self.pepper.getCameraFrame(self.handle)
         cv2.imwrite(filename, img)
-        print("Image saved")
+        #print("Image saved")
 
     def run(self):
         if self.id_camera == "top":
@@ -32,24 +33,29 @@ class Camera(threading.Thread):
             if not self.killed:
                 img = self.pepper.getCameraFrame(self.handle)
                 if self.id_camera == "depth":
-                    filename= "../ImageDepth.png"
+                    filename= "./ImageDepth.png"
                     cv2.imwrite(filename, img)
                     im_gray = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
                     im_color = cv2.applyColorMap(im_gray, cv2.COLORMAP_HSV)
                     cv2.imshow("colorBar depth camera", im_color)
                 else:
                     #cv2.imshow(self.id_camera+" camera Frame", img)
-                    self.find_cirle(img)
+                    self.find_circle(img)
                 cv2.waitKey(1)
             else:
                 break
 
-    def find_cirle(self, img):
+    def find_circle(self, img):
         img_gray = img.copy()
         img_gray = cv2.cvtColor(img_gray, cv2.COLOR_BGR2GRAY)
         circles = cv2.HoughCircles(img_gray, cv2.HOUGH_GRADIENT, 4, 10, minRadius=0, maxRadius=50)
         if circles is not None:
+            self.circle_found = True
+            #print("circle_found")
             circles = np.round(circles[0, :]).astype("int")
             for (x, y, r) in circles:
                 cv2.circle(img, (x, y), r, (0, 255, 0), 4)
+        else: 
+            self.circle_found = False
         cv2.imshow(self.id_camera+" camera Frame", img)
+        
