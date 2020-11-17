@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src"
   ],
-  "SelectedNode": "\\robot.py",
+  "SelectedNode": "\\src\\chatBotGUI.py",
   "PreviewInSolutionExplorer": false
 }
