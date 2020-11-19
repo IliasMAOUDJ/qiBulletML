@@ -1,12 +1,20 @@
 from qibullet import SimulationManager
 from src.robot import Robot
 import pybullet as p
+<<<<<<< Updated upstream
 import signal
 import sys
+=======
+import pybullet_data, signal, random, sys, threading
+>>>>>>> Stashed changes
 
-class Simulation():
+class Simulation(threading.Thread):
 
     def __init__(self):
+<<<<<<< Updated upstream
+=======
+        threading.Thread.__init__(self)
+>>>>>>> Stashed changes
         self.manager = SimulationManager()
         self.client_id = self.manager.launchSimulation(gui=True)
         p.connect(p.DIRECT)
@@ -18,7 +26,11 @@ class Simulation():
     def initUI(self):
         self.joint_parameters = list()
 
+<<<<<<< Updated upstream
         for name, joint in self.robot.pepper.joint_dict.items():
+=======
+        """for name, joint in self.robot.pepper.joint_dict.items():
+>>>>>>> Stashed changes
             if "Finger" not in name and "Thumb" not in name:
                 self.joint_parameters.append(
                     (
@@ -30,9 +42,11 @@ class Simulation():
                         ),
                         name
                     )
-                )
+                )"""
+        print(self.joint_parameters)
 
     def createScene(self):
+<<<<<<< Updated upstream
         """p.loadURDF("./urdf/table/table.urdf", basePosition=[2,1,0], globalScaling=1)
         p.loadURDF("./urdf/chair/chair.urdf", basePosition=[3,1,0], globalScaling=1)
         p.loadURDF("./urdf/chair/chair.urdf", basePosition=[4,1,0], globalScaling=1)"""
@@ -42,6 +56,25 @@ class Simulation():
         self.createWall(0.1, 3, 2, -3, 0, 0)
         self.createSphere(0.2, 2, 0, 0.5)
         self.createSphere(0.2, 2.2, -0.5, 0.15, (0, 0, 255))
+=======
+        p.setAdditionalSearchPath(pybullet_data.getDataPath())
+        """p.loadURDF("./urdf/table/table.urdf", basePosition=[2,1,0], globalScaling=1)
+        p.loadURDF("./urdf/chair/chair.urdf", basePosition=[3,1,0], globalScaling=1)
+        p.loadURDF("./urdf/chair/chair.urdf", basePosition=[4,1,0], globalScaling=1)"""
+        p.loadURDF("duck_vhacd.urdf", basePosition=[3,-2,0.5], globalScaling=10, )
+        #self.createWall(3, 0.1, 2, 0, 3, 0)
+        #self.createWall(3, 0.1, 2, 0, -3, 0)
+        #self.createWall(0.1, 3, 2, 3, 0, 0)
+        #self.createWall(0.1, 3, 2, -3, 0, 0)
+        #self.createSphere(0.2, 2, 0, 0.5)
+        #self.createSphere(0.2, 2.2, -0.5, 0.15, (0, 0, 255))
+        for i in range(30):
+            #self.createSphere(0.2, random.randint(0, 5), random.randint(-5, 5), 0.3, color=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+            self.createSphere(0.2, random.choice([-5, -4, -3, -2, -1, 1, 2, 4, 5]), random.choice([-5,-4, -3,-2,-1,1,2,3,4,5]), 0.3,
+                              color=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+            #self.createCube(random.choice([0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]),random.randint(-5, 5), random.randint(-5,5),(random.randint(0,255), random.randint(0,255), random.randint(0,255)))
+            #self.createCube(random.choice([0.2, 0.3, 0.4]), random.choice([-5,-4,-3,-2,-1,1, 2, 4, 5]), random.choice([-5,-4,-3, -2, -1, 1, 2, 3,4,5]),(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+>>>>>>> Stashed changes
         #cube_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[0.5,0.5,0.5])
         #cube_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[0.75,0.75,0.75])
         #cube_body = p.createMultiBody(baseMass=0, baseCollisionShapeIndex=cube_collision, baseVisualShapeIndex=cube_visual, basePosition=[2,1,0.25])
@@ -54,12 +87,14 @@ class Simulation():
         wall_body = p.createMultiBody(baseMass=0, baseCollisionShapeIndex=wall_collision, baseVisualShapeIndex=wall_visual, basePosition=[x, y, z])
 
     def createSphere(self, radius, x, y, z, color=(255, 0, 0)):
-        sphere_visual = p.createVisualShape(p.GEOM_SPHERE, rgbaColor=[color[0], color[1], color[2], 1], radius=radius)
+        sphere_visual = p.createVisualShape(p.GEOM_SPHERE, rgbaColor=[color[0]/255, color[1]/255, color[2]/255, 1], radius=radius)
         sphere_collision = p.createCollisionShape(p.GEOM_SPHERE, radius=radius)
         sphere_body = p.createMultiBody(baseMass=0, baseCollisionShapeIndex=sphere_collision,baseVisualShapeIndex=sphere_visual, basePosition=[x, y, z])
 
-    def createCube(self, width, height, x, y):
-        pass
+    def createCube(self, width, x, y, color=(255, 0, 0)):
+        cube_visual = p.createVisualShape(p.GEOM_BOX, rgbaColor=[color[0]/255, color[1]/255, color[2]/255, 1], halfExtents=[0.5, 0.5, 0.5])
+        cube_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[width, width, width])
+        cube_body = p.createMultiBody(baseMass=0, baseCollisionShapeIndex=cube_collision, baseVisualShapeIndex=cube_visual, basePosition=[x,y,width/2])
 
     def signal_handler(self, signal, frame):
         print("CTRL-C detected")
@@ -71,9 +106,17 @@ class Simulation():
 
     def run(self):
         self.robot.start()
+<<<<<<< Updated upstream
         while True:
+=======
+        """while True:
+>>>>>>> Stashed changes
             for joint_parameter in self.joint_parameters:
                 self.robot.pepper.setAngles(
                     joint_parameter[1],
                     p.readUserDebugParameter(joint_parameter[0]), 1.0
+<<<<<<< Updated upstream
                 )
+=======
+                )"""
+>>>>>>> Stashed changes

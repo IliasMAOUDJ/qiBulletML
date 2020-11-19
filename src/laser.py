@@ -38,6 +38,7 @@ class Laser(threading.Thread):
                         self.detection[index] = True
                     else:
                         self.detection[index] = False
+<<<<<<< Updated upstream
 
                 print("--- Detection {} ---".format(self.side.upper()))
 
@@ -45,6 +46,8 @@ class Laser(threading.Thread):
                     print("Obstacle")
                 else:
                     print("No obstacle")
+=======
+>>>>>>> Stashed changes
                 time.sleep(1)
             else:
                 break

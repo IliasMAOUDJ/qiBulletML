@@ -1,22 +1,46 @@
 import threading, cv2, numpy as np
+import time
 from qibullet import PepperVirtual
 
 class Camera(threading.Thread):
     
-    def __init__(self, pepper, id_camera):
+    def __init__(self, parent, pepper, id_camera, classifier=None):
         threading.Thread.__init__(self)
+        self.parent = parent
         self.pepper = pepper
+        self.classifier = classifier
         self.id_camera = id_camera
+        self.duck_found = False
         self.killed = False
+<<<<<<< Updated upstream
+=======
+        self.photo = [i for i in range(100)]
+>>>>>>> Stashed changes
 
     def kill(self):
         self.killed = True
 
     def save_img(self):
-        filename=self.id_camera+"_camera.png"
+        filename="./img_mix/"+str(int(time.time()*1000))+".png"
         img = self.pepper.getCameraFrame(self.handle)
         cv2.imwrite(filename, img)
         print("Image saved")
+<<<<<<< Updated upstream
+=======
+
+    def find_duck(self):
+        img_array = [self.pepper.getCameraFrame(self.handle)]
+        img_array = np.array(img_array)
+        #img_array = np.asarray([(img-img.mean())/img.std() for img in img_array])
+        #img = img_array.reshape((img_array.shape[0], -1))
+        prediction = self.classifier.predict(img_array)[0]
+        print(prediction)
+        if prediction[1] > 0.95:
+            print("Youpi, canard trouvé")
+            self.duck_found = True
+            self.parent.stop = True
+            self.parent.point_finger()
+>>>>>>> Stashed changes
 
     def run(self):
         if self.id_camera == "top":
@@ -38,8 +62,17 @@ class Camera(threading.Thread):
                     im_color = cv2.applyColorMap(im_gray, cv2.COLORMAP_HSV)
                     cv2.imshow("colorBar depth camera", im_color)
                 else:
+<<<<<<< Updated upstream
                     #cv2.imshow(self.id_camera+" camera Frame", img)
                     self.find_cirle(img)
+=======
+                    if self.classifier != None and not self.duck_found:
+                        self.find_duck()
+                    if self.id_camera == "top":
+                        pass#self.save_img()
+                    cv2.imshow(self.id_camera+" camera Frame", img)
+                    #self.find_cirle(img)
+>>>>>>> Stashed changes
                 cv2.waitKey(1)
             else:
                 break
