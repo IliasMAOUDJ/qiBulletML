@@ -12,10 +12,7 @@ class Camera(threading.Thread):
         self.id_camera = id_camera
         self.duck_found = False
         self.killed = False
-<<<<<<< Updated upstream
-=======
         self.photo = [i for i in range(100)]
->>>>>>> Stashed changes
 
     def kill(self):
         self.killed = True
@@ -25,8 +22,6 @@ class Camera(threading.Thread):
         img = self.pepper.getCameraFrame(self.handle)
         cv2.imwrite(filename, img)
         print("Image saved")
-<<<<<<< Updated upstream
-=======
 
     def find_duck(self):
         img_array = [self.pepper.getCameraFrame(self.handle)]
@@ -40,7 +35,6 @@ class Camera(threading.Thread):
             self.duck_found = True
             self.parent.stop = True
             self.parent.point_finger()
->>>>>>> Stashed changes
 
     def run(self):
         if self.id_camera == "top":
@@ -62,17 +56,12 @@ class Camera(threading.Thread):
                     im_color = cv2.applyColorMap(im_gray, cv2.COLORMAP_HSV)
                     cv2.imshow("colorBar depth camera", im_color)
                 else:
-<<<<<<< Updated upstream
-                    #cv2.imshow(self.id_camera+" camera Frame", img)
-                    self.find_cirle(img)
-=======
                     if self.classifier != None and not self.duck_found:
                         self.find_duck()
                     if self.id_camera == "top":
                         pass#self.save_img()
                     cv2.imshow(self.id_camera+" camera Frame", img)
                     #self.find_cirle(img)
->>>>>>> Stashed changes
                 cv2.waitKey(1)
             else:
                 break

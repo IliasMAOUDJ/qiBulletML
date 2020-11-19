@@ -2,21 +2,15 @@ import threading, time, math, pickle
 from src.laser import Laser
 from src.camera import Camera
 
-<<<<<<< Updated upstream
-=======
 from tensorflow import keras
 
->>>>>>> Stashed changes
 
 class Robot(threading.Thread):
     def __init__(self, simulation_manager, client_id):
         threading.Thread.__init__(self)
         self.x = 0
         self.y = 0
-<<<<<<< Updated upstream
-=======
         self.stop = False
->>>>>>> Stashed changes
         self.pepper = simulation_manager.spawnPepper(client_id, spawn_ground_plane=True)
         #self.pepper.showLaser(True)
         #self.pepper.subscribeLaser()
@@ -40,19 +34,6 @@ class Robot(threading.Thread):
     def kill(self):
         self.killed = True
 
-<<<<<<< Updated upstream
-    def move(self, x=0.0, y=0.0, theta=0.0):
-        self.x += x
-        self.y += y
-        self.pepper.moveTo(x, y, theta, frame=2, _async=False)
-        print("Local position: \n{} | {}".format(self.x, self.y))
-
-    def run(self):
-        self.move(y=-0.7)
-        self.move(y=1.4)
-        #self.move(x=0.5)
-        #self.threads[1].save_img()
-=======
     def point_finger(self):
         self.pepper.setAngles("RShoulderPitch", 0.088, 1.0)
         self.pepper.setAngles("RShoulderRoll", -0.377, 1.0)
@@ -80,4 +61,3 @@ class Robot(threading.Thread):
         #elbowroll=0.401
         #wristyaw=0.768
         #rhand=0.975
->>>>>>> Stashed changes
