@@ -8,6 +8,7 @@ import pybullet as p
 import signal
 import threading
 import sys
+import queue
 
 class Simulation():
 
@@ -16,7 +17,7 @@ class Simulation():
         self.client_id = self.manager.launchSimulation(gui=True)
         p.connect(p.DIRECT)
         self.robot = Robot(self.manager, self.client_id)
-        self.createScene()
+        #self.createScene()
         self.initUI()
 
     def initUI(self):
@@ -65,9 +66,10 @@ class Simulation():
 
     def run(self):
         self.robot.start()
-        while True:
-            for joint_parameter in self.joint_parameters:
-                self.robot.pepper.setAngles(
-                    joint_parameter[1],
-                    p.readUserDebugParameter(joint_parameter[0]), 1.0
-                )
+        #while True:
+        #    for joint_parameter in self.joint_parameters:
+        #        self.robot.pepper.setAngles(
+        #            joint_parameter[1],
+        #            p.readUserDebugParameter(joint_parameter[0]), 1.0
+        #        )
+            
