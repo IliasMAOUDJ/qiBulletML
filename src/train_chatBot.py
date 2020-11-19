@@ -23,8 +23,8 @@ def train_ChatBot():
     words = []
     classes = []
     documents = []
-    ignore_words = ['?', '!']
-    data_file = open('intents.json').read()
+    ignore_words = ['?', '!','.']
+    data_file = open('src/intents.json').read()
     intents = json.loads(data_file)
     for intent in intents['intents']:
         for pattern in intent['patterns']:
@@ -43,8 +43,8 @@ def train_ChatBot():
     words = sorted(list(set(words)))
     classes = sorted(list(set(classes)))
 
-    pickle.dump(words,open('words.pkl','wb'))
-    pickle.dump(classes,open('classes.pkl','wb'))
+    pickle.dump(words,open('src/words.pkl','wb'))
+    pickle.dump(classes,open('src/classes.pkl','wb'))
 
     # initializing training data
     training = []
@@ -87,7 +87,7 @@ def train_ChatBot():
 
     #fitting and saving the model
     hist = model.fit(np.array(train_x), np.array(train_y), epochs=1000, batch_size=5, verbose=1)
-    model.save('chatbot_model.h5', hist)
+    model.save('src/chatbot_model.h5', hist)
 
         
 
