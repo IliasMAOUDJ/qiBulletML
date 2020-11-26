@@ -1,0 +1,38 @@
+{"intents": [
+  {"tag": "greeting",
+    "patterns": ["Hi", "Hello", "Hey"],
+    "responses": ["Hello, thanks for visiting", "Good to see you again", "Hi there, how can I help?"],
+    "context_filter": ""
+  },
+  {"tag": "who",
+    "patterns": ["Who are you ?", "What are you ?", "What do you do ?"],
+    "responses": ["I am PiLDIM, I am here to help you with various tasks"],
+    "context_filter": ""
+  },
+  {"tag": "goodbye",
+    "patterns": ["Bye", "See you later", "Goodbye"],
+    "responses": ["See you later!", "Have a nice day!", "Bye! Come back again soon."],
+    "context_filter": ""
+  },
+  {"tag": "thanks",
+    "patterns": ["Thanks", "Thank you", "That's helpful"],
+    "responses": ["Happy to help!", "Any time!", "My pleasure"],
+    "context_filter": ""
+  },
+  {"tag": "order",
+    "patterns": ["Go to", "Find", "Come", "Stop"],
+    "responses": ["Understood", "Task under completion !", "I shall do it!"],
+    "context_filter": ""
+  },
+  {"tag": "test",
+    "patterns": ["Test"],
+    "responses": ["It works :)"],
+    "context_filter":""
+  },
+  {"tag": "no_result",
+    "patterns": ["You don't understand me, do you ?", "understand ?"],
+    "responses": ["I don't understand."],
+    "context_filter":""
+   }
+]
+}

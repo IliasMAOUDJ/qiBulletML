@@ -38,6 +38,14 @@ class Laser(threading.Thread):
                         self.detection[index] = True
                     else:
                         self.detection[index] = False
+                """
+                print("--- Detection {} ---".format(self.side.upper()))
+
+                if self.isDetection():
+                    print("Obstacle")
+                else:
+                    print("No obstacle")
                 time.sleep(1)
+                """
             else:
                 break
