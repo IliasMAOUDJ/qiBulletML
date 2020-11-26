@@ -11,9 +11,6 @@ import time
 import json
 import pickle
 import numpy as np
-from keras.models import Sequential
-from keras.layers import Dense, Activation, Dropout
-from keras.optimizers import SGD
 import random
 import threading, queue
 import re
@@ -53,6 +50,7 @@ class Window(QtWidgets.QWidget):
         self.intents = json.loads(open('./src/intents.json').read())
         self.words = pickle.load(open('./src/words.pkl','rb'))
         self.classes = pickle.load(open('./src/classes.pkl','rb'))
+        print("------------------ Loading Model ----------------------------")
         self.model = load_model('./src/chatbot_model.h5')
         self.layout = QtWidgets.QVBoxLayout(self)
         self.font = QFont()

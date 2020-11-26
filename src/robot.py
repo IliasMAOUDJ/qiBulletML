@@ -33,15 +33,12 @@ class Robot(threading.Thread):
     def kill(self):
         self.killed = True
 
-    def move(self, x=0.0, y=0.0, theta=0.0, sync=False, facedirection = True):
+    def move(self, x=0.0, y=0.0, theta=0.0, asynch=False, facedirection = True):
         angle = 0
         if(facedirection):
-            new_position= [x,y,0]
-            new_position_norm = new_position / np.linalg.norm(new_position)
-            theta = np.dot(new_position_norm, [1, 0, 0])
-            angle = np.arccos(theta)
-        self.pepper.moveTo(x=0, y=0,theta=angle)
-        self.pepper.moveTo(math.sqrt(x*x+y*y), y=0, theta=0, frame=2, _async= sync)
+            angle = np.angle(complex(x,y))
+        self.pepper.moveTo(0, 0,theta=angle, _async= asynch)
+        self.pepper.moveTo(np.linalg.norm([x,y,0]), y=0, theta=0, frame=2, _async= asynch)
         #print("Local position: \n{} | {}".format(self.x, self.y))
     
 
@@ -56,12 +53,12 @@ class Robot(threading.Thread):
         return False
 
     def order(self, content):
-        if (self.findWholeWord('go')(content)):          
+        if (self.findWholeWord('go')(content) or self.findWholeWord('move')(content)):          
             sentence_words = nltk.word_tokenize(content)
             position = [float(word) for word in sentence_words if self.isnumber(word)]
             if(len(position)==2):              
-                self.move(x=position[0],y=position[1],sync=True)
-                content = "Going to: x= "+ str(position[0]) + ", y= "+ str(position[1]) 
+                self.move(x=position[0],y=position[1])
+                content = "Moving to: x= "+ str(position[0]) + ", y= "+ str(position[1]) 
             else:
                 content = "I couldn't move to this position, make sure you asked correctly."
         elif (self.findWholeWord('find')(content)):
@@ -74,14 +71,23 @@ class Robot(threading.Thread):
 
 
     def perform_action(self, tag):
-        if(tag=="greeting"):
-            self.pepper.setAngles('LShoulderPitch', -0.5, 0.6)
-            time.sleep(2)
-            self.pepper.goToPosture("Stand", 0.6)
+        if(tag=="greeting" or tag=="goodbye"):
+            self.pepper.setAngles('LShoulderPitch', -0.5, 0.6)       
         elif(tag=="thanks"):
-            pass
-        else:
-            pass
+            self.pepper.setAngles('HipPitch', -0.5,0.6)
+        elif(tag=="no_result"):
+            self.pepper.setAngles('HeadYaw', -0.5,0.6)
+            time.sleep(1)
+            self.pepper.setAngles('HeadYaw', 0.5,0.6)
+            time.sleep(1)
+            self.pepper.setAngles('HeadYaw', 0,0.6)
+        elif(tag=="who"):
+            self.pepper.setAngles('RShoulderPitch',0.5,0.4)
+            self.pepper.setAngles('RElbowYaw',0.35,0.4)
+            self.pepper.setAngles('RElbowRoll',1.1,0.4)
+            self.pepper.setAngles('RWristYaw',1.3,0.4)
+        time.sleep(2)
+        self.pepper.goToPosture("Stand", 0.6)
     
     def run(self):
         while True:
