@@ -7,6 +7,7 @@ import src.chatBotGUI
 import re
 import nltk
 import numpy as np
+from tensorflow import keras
 orders = src.chatBotGUI.orders
 tasks_done = src.chatBotGUI.tasks_done
 talk = src.chatBotGUI.talk
@@ -15,23 +16,37 @@ class Robot(threading.Thread):
     def __init__(self, simulation_manager, client_id):
         threading.Thread.__init__(self)
         self.pepper = simulation_manager.spawnPepper(client_id, spawn_ground_plane=True)
-        self.pepper.showLaser(True)
-        self.pepper.subscribeLaser()
+        #self.pepper.showLaser(True)
+        #self.pepper.subscribeLaser()
+        self.duck_finder = keras.models.load_model("./model/classifier.h5")
         self.threads = [
-            Camera(self.pepper, "top"),
-            Camera(self.pepper, "bottom"),
-            Camera(self.pepper, "depth"),
-            Laser(self.pepper, "front"),
-            Laser(self.pepper, "left"),
-            Laser(self.pepper, "right")
+            Camera(self, self.pepper, "top", self.duck_finder),
+            #Camera(self.pepper, "bottom"),
+            #Camera(self.pepper, "depth"),
+            #Laser(self.pepper, "front"),
+            #Laser(self.pepper, "left"),
+            #Laser(self.pepper, "right")
         ]
-        self.pepper.goToPosture("Stand", 0.6)
+        self.initialPosture()
         for thread in self.threads:
             thread.start()
         self.killed = False
+        self.stop = False
+
+    def initialPosture(self):
+        self.pepper.goToPosture("Stand", 0.6)
+        self.pepper.setAngles("HeadPitch", 0.361, 1.0)
 
     def kill(self):
         self.killed = True
+
+    def point_finger(self):
+        self.pepper.setAngles("RShoulderPitch", 0.088, 1.0)
+        self.pepper.setAngles("RShoulderRoll", -0.377, 1.0)
+        self.pepper.setAngles("RElbowYaw", 0.044, 1.0)
+        self.pepper.setAngles("RElbowRoll", 0.401, 1.0)
+        self.pepper.setAngles("RWristYaw", 0.768, 1.0)
+        self.pepper.setAngles("RHand", 0.975, 1.0)
 
     def move(self, x=0.0, y=0.0, theta=0.0, asynch=False, facedirection = True):
         angle = 0
@@ -87,17 +102,20 @@ class Robot(threading.Thread):
             self.pepper.setAngles('RElbowRoll',1.1,0.4)
             self.pepper.setAngles('RWristYaw',1.3,0.4)
         time.sleep(2)
-        self.pepper.goToPosture("Stand", 0.6)
+        self.pepper.goToPosture("Stand", 0.6)  
+
     
-    def run(self):
+    def find_duck(self):
+        #self.threads[0].search_duck = True
         while True:
-            for obj in self.threads:
-                if isinstance(obj,Camera):
-                    if obj.circle_found == True:
-                        pass
-                        #self.move(x=0.1)
-                        #print("circle found")
-            
+            self.pepper.moveTo(x=0.0, y=0.0, theta=math.pi/5, speed=0.6, _async=True)
+            self.threads[0].find_duck_in_big_image()
+            if self.stop:
+                break
+
+
+    def run(self):
+        while True:       
             global orders
             if(orders.empty() is False):
                 self.order(orders.get())
