@@ -132,7 +132,7 @@ class Window(QtWidgets.QWidget):
     def chatbot_response(self, msg):
         ints = self.predict_class(msg, self.model)
         res = self.getResponse(ints, msg, self.intents)
-        self.chatlog.append("PEPPER: " + res)
+        self.chatlog.append("PiLDIM: " + res)
         self.chatlog.setAlignment(Qt.AlignRight)
         self.userinput.setReadOnly(False)      
         self.userinput.setText("")

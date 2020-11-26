@@ -14,10 +14,6 @@ talk = src.chatBotGUI.talk
 class Robot(threading.Thread):
     def __init__(self, simulation_manager, client_id):
         threading.Thread.__init__(self)
-        self.x = 0
-        self.y = 0
-        self.theta = 0
-
         self.pepper = simulation_manager.spawnPepper(client_id, spawn_ground_plane=True)
         self.pepper.showLaser(True)
         self.pepper.subscribeLaser()
@@ -38,9 +34,14 @@ class Robot(threading.Thread):
         self.killed = True
 
     def move(self, x=0.0, y=0.0, theta=0.0, sync=False, facedirection = True):
-        self.x = x
-        self.y = y
-        self.pepper.moveTo(x, y, theta, frame=1, _async= sync)
+        angle = 0
+        if(facedirection):
+            new_position= [x,y,0]
+            new_position_norm = new_position / np.linalg.norm(new_position)
+            theta = np.dot(new_position_norm, [1, 0, 0])
+            angle = np.arccos(theta)
+        self.pepper.moveTo(x=0, y=0,theta=angle)
+        self.pepper.moveTo(math.sqrt(x*x+y*y), y=0, theta=0, frame=2, _async= sync)
         #print("Local position: \n{} | {}".format(self.x, self.y))
     
 
@@ -68,7 +69,7 @@ class Robot(threading.Thread):
         elif (self.findWholeWord('come')(content)):
             pass
         elif (self.findWholeWord('stop')(content)):
-            self.move(x=0,y=0, sync=True)
+            self.pepper.stopMove()
         tasks_done.put(content)
 
 

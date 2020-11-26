@@ -64,9 +64,24 @@ class Simulation():
         self.manager.stopSimulation(self.client_id)
         sys.exit(0)
 
+
+    def moveCamera(self):
+        keys = p.getKeyboardEvents()
+        if(keys.get(122)): #Z
+            p.resetDebugVisualizerCamera(cameraDistance=5, cameraYaw=0, cameraPitch=0, cameraTargetPosition=[self.robot.x, self.robot.y, 0])
+        elif(keys.get(120)): #X
+            print(self.robot.x)
+            print(self.robot.y)
+            p.resetDebugVisualizerCamera(cameraDistance=5, cameraYaw=0, cameraPitch=0, cameraTargetPosition=[0, 0, 0])
+
     def run(self):
         self.robot.start()
-        #while True:
+        while True:
+            p.resetDebugVisualizerCamera(cameraDistance= p.getDebugVisualizerCamera(self.client_id)[10], 
+                                         cameraYaw= p.getDebugVisualizerCamera(self.client_id)[8], 
+                                         cameraPitch= p.getDebugVisualizerCamera(self.client_id)[9], 
+                                         cameraTargetPosition= [self.robot.pepper.getPosition()[0], self.robot.pepper.getPosition()[1], 0])
+            #self.moveCamera()
         #    for joint_parameter in self.joint_parameters:
         #        self.robot.pepper.setAngles(
         #            joint_parameter[1],
