@@ -77,7 +77,7 @@ class Robot(threading.Thread):
             else:
                 content = "I couldn't move to this position, make sure you asked correctly."
         elif (self.findWholeWord('find')(content)):
-            pass
+            self.find_duck()
         elif (self.findWholeWord('come')(content)):
             pass
         elif (self.findWholeWord('stop')(content)):
@@ -102,13 +102,13 @@ class Robot(threading.Thread):
             self.pepper.setAngles('RElbowRoll',1.1,0.4)
             self.pepper.setAngles('RWristYaw',1.3,0.4)
         time.sleep(2)
-        self.pepper.goToPosture("Stand", 0.6)  
+        self.initialPosture()
 
     
     def find_duck(self):
         #self.threads[0].search_duck = True
         while True:
-            self.pepper.moveTo(x=0.0, y=0.0, theta=math.pi/5, speed=0.6, _async=True)
+            self.pepper.moveTo(x=0.0, y=0.0, theta=math.pi/5, speed=0.6, _async=False)
             self.threads[0].find_duck_in_big_image()
             if self.stop:
                 break

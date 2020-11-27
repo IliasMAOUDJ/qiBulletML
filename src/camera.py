@@ -1,4 +1,4 @@
-import threading, cv2, numpy as np, time
+import threading, cv2, numpy as np, time, imutils
 from qibullet import PepperVirtual
 
 
@@ -55,7 +55,7 @@ class Camera(threading.Thread):
         prediction = self.classifier.predict(img_array)[0]
         print(prediction)
         #prediction[0] is "not duck" and prediction[1] is "there is a duck"
-        if prediction[1] > 0.95:
+        if prediction[1] > 0.90:
             print("Youpi, canard trouvé")
             self.duck_found = True
             self.parent.stop = True
@@ -65,6 +65,7 @@ class Camera(threading.Thread):
     def find_duck_accurately(self, img):
         (winW, winH) = (128,128)
         find = False
+        bounding_boxes = []
         for resized in pyramid(img, scale=1.5):
             for (x, y, window) in sliding_window(resized, stepSize=32, windowSize=(winW, winH)):
                 if window.shape[0] != winH or window.shape[1] != winW:
@@ -75,17 +76,25 @@ class Camera(threading.Thread):
                 img_array = np.array([image])
                 prediction = self.classifier.predict(img_array)[0]
                 if prediction[1] > 0.95:
-                    find = True
-
-                if find:
-                    clone = resized.copy()
-                    cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 0, 255), 2)
-                    cv2.putText(clone, 'A Duck is here', (x, y + winH + 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0,0,255), 1)
-                    cv2.imshow("Window", clone)
-                    cv2.waitKey(1)
-                    break
+                    if len(bounding_boxes) != 0:
+                        if prediction[1] > bounding_boxes[0]:
+                            bounding_boxes = [prediction[1], (x,y)]
+                        else:
+                            find = True
+                            break
+                    else:
+                        bounding_boxes = [prediction[1], (x,y)]
             if find:
                 break
+
+        if find:
+            clone = resized.copy()
+            x = bounding_boxes[1][0]
+            y = bounding_boxes[1][1]
+            cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 0, 255), 2)
+            cv2.putText(clone, 'Duck at %.2f' % (bounding_boxes[0]*100) , (x, y + winH + 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 1)
+            cv2.imshow("Window", clone)
+            cv2.waitKey(1)
         
     def run(self):
         if self.id_camera == "top":
@@ -98,7 +107,7 @@ class Camera(threading.Thread):
             print("No camera found")
             return
         while True:
-            if not self.killed and self.search_duck:
+            if not self.killed:
                 img = self.pepper.getCameraFrame(self.handle)
                 if self.id_camera == "depth":
                     filename= "./ImageDepth.png"
@@ -107,11 +116,10 @@ class Camera(threading.Thread):
                     im_color = cv2.applyColorMap(im_gray, cv2.COLORMAP_HSV)
                     cv2.imshow("colorBar depth camera", im_color)
                 else:
-                    if self.classifier != None and not self.duck_found:
-                        self.find_duck_in_big_image()
-                    #cv2.imshow(self.id_camera+" camera Frame", img)
+                    if not self.duck_found:
+                        cv2.imshow("Window", img)
                     #self.find_circle(img)
             if self.killed:
                 break
-            time.sleep(0.01)
+            cv2.waitKey(1)
         
