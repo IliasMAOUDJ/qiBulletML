@@ -68,6 +68,7 @@ class Robot(threading.Thread):
         return False
 
     def order(self, content):
+        
         if (self.findWholeWord('go')(content) or self.findWholeWord('move')(content)):          
             sentence_words = nltk.word_tokenize(content)
             position = [float(word) for word in sentence_words if self.isnumber(word)]
@@ -77,7 +78,8 @@ class Robot(threading.Thread):
             else:
                 content = "I couldn't move to this position, make sure you asked correctly."
         elif (self.findWholeWord('find')(content)):
-            pass
+            self.find_duck()
+            content = "I will find it :)"
         elif (self.findWholeWord('come')(content)):
             pass
         elif (self.findWholeWord('stop')(content)):
@@ -102,7 +104,7 @@ class Robot(threading.Thread):
             self.pepper.setAngles('RElbowRoll',1.1,0.4)
             self.pepper.setAngles('RWristYaw',1.3,0.4)
         time.sleep(2)
-        self.pepper.goToPosture("Stand", 0.6)  
+        self.initialPosture()  
 
     
     def find_duck(self):

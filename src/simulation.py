@@ -40,13 +40,6 @@ class Simulation(threading.Thread):
             self.createSphere(0.2, random.choice([-5, -4, -3, -2, -1, 1, 2, 4, 5]), random.choice([-5,-4, -3,-2,-1,1,2,3,4,5]), 0.3,
                               color=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
 
-        """self.createWall(3, 0.1, 2, 0, 3, 0)
-        self.createWall(3, 0.1, 2, 0, -3, 0)
-        self.createWall(0.1, 3, 2, 3, 0, 0)
-        self.createWall(0.1, 3, 2, -3, 0, 0)
-        self.createSphere(0.2, 2, 0, 0.5)
-        self.createSphere(0.2, 2.2, -0.5, 0.15, (0, 0, 255))"""
-
     def createWall(self, w, h, d, x, y, z):
         wall_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[w, h, d])
         wall_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[w, h, d])

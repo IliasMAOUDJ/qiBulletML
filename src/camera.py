@@ -109,7 +109,7 @@ class Camera(threading.Thread):
                 else:
                     if self.classifier != None and not self.duck_found:
                         self.find_duck_in_big_image()
-                    #cv2.imshow(self.id_camera+" camera Frame", img)
+                    cv2.imshow(self.id_camera+" camera Frame", img)
                     #self.find_circle(img)
             if self.killed:
                 break
