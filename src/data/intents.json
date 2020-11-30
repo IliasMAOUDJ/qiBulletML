@@ -1,11 +1,11 @@
 {"intents": [
   {"tag": "greeting",
     "patterns": ["Hi", "Hello", "Hey"],
-    "responses": ["Hello, thanks for visiting", "Good to see you again", "Hi there, how can I help?"],
+    "responses": ["Hello, thanks for visiting.", "Good to see you again.", "Hi there, how can I help?"],
     "context_filter": ""
   },
   {"tag": "who",
-    "patterns": ["Who are you ?", "What are you ?", "What do you do ?"],
+    "patterns": ["Who are you ", "What are you ", "What do you do "],
     "responses": ["I am PiLDIM, I am here to help you with various tasks"],
     "context_filter": ""
   },
@@ -30,7 +30,7 @@
     "context_filter":""
   },
   {"tag": "no_result",
-    "patterns": ["You don't understand me, do you ?", "understand ?"],
+    "patterns": ["You don't understand me, do you ", "understand"],
     "responses": ["I don't understand."],
     "context_filter":""
    }

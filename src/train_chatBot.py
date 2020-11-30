@@ -23,7 +23,7 @@ def train_ChatBot():
     words = []
     classes = []
     documents = []
-    ignore_words = ['?', '!','.']
+    ignore_words = []
     data_file = open('src/data/intents.json').read()
     intents = json.loads(data_file)
     for intent in intents['intents']:

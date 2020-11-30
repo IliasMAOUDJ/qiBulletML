@@ -35,8 +35,8 @@ class Simulation(threading.Thread):
 
     def createScene(self):
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
-        p.loadURDF("duck_vhacd.urdf", basePosition=[3,-2,0.5], globalScaling=10, )
-        for i in range(30):
+        p.loadURDF("duck_vhacd.urdf", basePosition=[random.randrange(-3,3),random.randrange(-3,3),0.5], globalScaling=10, )
+        for i in range(24):
             self.createSphere(0.2, random.choice([-5, -4, -3, -2, -1, 1, 2, 4, 5]), random.choice([-5,-4, -3,-2,-1,1,2,3,4,5]), 0.3,
                               color=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
 

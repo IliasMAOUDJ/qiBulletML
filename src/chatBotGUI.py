@@ -127,8 +127,8 @@ class Window(QtWidgets.QWidget):
         return result
 
     def chatbot_response(self, msg):
-        ints = self.predict_class(msg, self.model)
-        res = self.getResponse(ints, msg, self.intents)
+        ints = self.predict_class(msg.lower(), self.model)
+        res = self.getResponse(ints, msg.lower(), self.intents)
         self.chatlog.append("PiLDIM: " + res)
         self.chatlog.setAlignment(Qt.AlignRight)
         self.userinput.setReadOnly(False)      
