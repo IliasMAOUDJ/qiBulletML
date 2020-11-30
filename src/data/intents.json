@@ -21,7 +21,7 @@
   },
   {"tag": "order",
     "patterns": ["Go to", "Find", "Come", "Stop", "Move to"],
-    "responses": ["Understood", "Task under completion !", "I shall do it!"],
+    "responses": ["Understood.", "Completing task now !", "I shall do it!"],
     "context_filter": ""
   },
   {"tag": "test",
