@@ -47,10 +47,10 @@ class Window(QtWidgets.QWidget):
         Initilize all the widgets then call the GuiSetup to customize them
         '''
         QtWidgets.QWidget.__init__(self)
-        self.intents = json.loads(open('./src/intents.json').read())
-        self.words = pickle.load(open('./src/words.pkl','rb'))
-        self.classes = pickle.load(open('./src/classes.pkl','rb'))
-        self.model = load_model('./src/chatbot_model.h5')
+        self.intents = json.loads(open('./src/data/intents.json').read())
+        self.words = pickle.load(open('./src/data/words.pkl','rb'))
+        self.classes = pickle.load(open('./src/data/classes.pkl','rb'))
+        self.model = load_model('./src/data/chatbot_model.h5')
         self.layout = QtWidgets.QVBoxLayout(self)
         self.font = QFont()
         self.font.setPointSize(12)
