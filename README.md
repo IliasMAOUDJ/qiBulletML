@@ -6,7 +6,8 @@ It was developped by Pierre LE DEZ and Ilias MAOUDJ between october and december
 It includes Computer Vision via Object Detection and Human/Robot Interaction via Chat.
 
 PiLDIM (named after the developers) is a Pepper robot that interacts with humans and can recognize ducks.
-
+Screenshots and demonstration video below:
+https://www.youtube.com/watch?v=UVsZ72RsFcs&feature=youtu.be
 ![alt text](https://github.com/IliasMAOUDJ/qiBulletML/blob/master/Screenshots/Hello.png)
 ![alt text](https://github.com/IliasMAOUDJ/qiBulletML/blob/master/Screenshots/MoveTo.png)
 ![alt text](https://github.com/IliasMAOUDJ/qiBulletML/blob/master/Screenshots/FindDuck.png)
