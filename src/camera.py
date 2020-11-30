@@ -94,7 +94,7 @@ class Camera(threading.Thread):
             cv2.rectangle(clone, (x, y), (x + winW, y + winH), (0, 0, 255), 2)
             cv2.putText(clone, 'Duck at %.2f' % (bounding_boxes[0]*100) , (x, y + winH + 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 1)
             cv2.imshow("The Duck", clone)
-            cv2.waitKey(3000)
+            cv2.waitKey(7000)
             cv2.destroyAllWindows()
         
     def run(self):

@@ -18,7 +18,7 @@ class Robot(threading.Thread):
         self.pepper = simulation_manager.spawnPepper(client_id, spawn_ground_plane=True)
         #self.pepper.showLaser(True)
         #self.pepper.subscribeLaser()
-        self.duck_finder = keras.models.load_model("./model/classifier.h5")
+        self.duck_finder = keras.models.load_model("./model/classifier_V2.h5")
         self.threads = [
             Camera(self, self.pepper, "top", self.duck_finder),
             #Camera(self.pepper, "bottom"),
