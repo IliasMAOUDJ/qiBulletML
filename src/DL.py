@@ -19,8 +19,8 @@ def read_images(path):
     return data
 
 def main(save=False):
-    duck_img = read_images("./data/raw_images.pick")
-    not_duck_img = read_images("./data/raw_images_not.pick")
+    duck_img = read_images("../data/raw_images.pick")
+    not_duck_img = read_images("../data/raw_images_not.pick")
 
     not_duck_img = not_duck_img[:int(len(duck_img))]
 
@@ -61,7 +61,7 @@ def main(save=False):
     print(score)
 
     if save:
-        model.save("classifier.h5")
+        model.save("../model/classifier.h5")
 
 
 if __name__ == "__main__":
