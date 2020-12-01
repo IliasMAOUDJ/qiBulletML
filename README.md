@@ -37,7 +37,7 @@ $ python src/DL.py [-s] [-im path_folder] [-h]
 # for chatBot
 $ python src/train_chatbot.py
 
-*It is possible to add more dialogue options by filling "src/intents.json"
+*It is possible to add more dialogue options by filling "src/data/intents.json"
 ```
 
 
