@@ -27,7 +27,7 @@ $ pip install -r requirements.txt
 # for main application
 $ python main.py
 
-# for CNN
+# for CNN (Training/testing images aren't on this repository so the DL.py script won't work)
 $ python src/DL.py [-s] [-im path_folder] [-h]
   optional arguments:
     -h, --help                                    Show this help message and exit
