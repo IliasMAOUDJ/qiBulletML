@@ -1,5 +1,4 @@
 import threading
-from src.laser import Laser
 from src.camera import Camera
 import math
 import time
@@ -8,6 +7,7 @@ import re
 import nltk
 import numpy as np
 from tensorflow import keras
+
 orders = src.chatBotGUI.orders
 tasks_done = src.chatBotGUI.tasks_done
 talk = src.chatBotGUI.talk
@@ -16,16 +16,9 @@ class Robot(threading.Thread):
     def __init__(self, simulation_manager, client_id):
         threading.Thread.__init__(self)
         self.pepper = simulation_manager.spawnPepper(client_id, spawn_ground_plane=True)
-        #self.pepper.showLaser(True)
-        #self.pepper.subscribeLaser()
         self.duck_finder = keras.models.load_model("./model/classifier_V2.h5")
         self.threads = [
             Camera(self, self.pepper, "top", self.duck_finder),
-            #Camera(self.pepper, "bottom"),
-            #Camera(self.pepper, "depth"),
-            #Laser(self.pepper, "front"),
-            #Laser(self.pepper, "left"),
-            #Laser(self.pepper, "right")
         ]
         self.initialPosture()
         for thread in self.threads:
@@ -70,8 +63,9 @@ class Robot(threading.Thread):
                 return True
         return False
 
+
+    #If PiLDIM recognizes an order, he processes it here.
     def order(self, content):
-        
         if (self.findWholeWord('go')(content) or self.findWholeWord('move')(content)):          
             sentence_words = nltk.word_tokenize(content)
             position = [float(word) for word in sentence_words if self.isnumber(word)]
@@ -83,13 +77,14 @@ class Robot(threading.Thread):
         elif (self.findWholeWord('find')(content)):
             self.find_duck()
             content = "Here it is!"
-        elif (self.findWholeWord('come')(content)):
+        elif (self.findWholeWord('come')(content)): #Feature not developed at the moment
             pass
         elif (self.findWholeWord('stop')(content)):
             self.pepper.stopMove()
         tasks_done.put(content)
 
 
+    #PiLDIM will do a gesture according to the intent
     def perform_action(self, tag):
         if(tag=="greeting" or tag=="goodbye"):
             self.pepper.setAngles('LShoulderPitch', -0.5, 0.6)       

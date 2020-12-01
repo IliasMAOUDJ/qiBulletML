@@ -67,15 +67,19 @@ class Simulation(threading.Thread):
     def run(self):
         self.robot.start()
         """
+        #Used to follow the robot position but lower performances
         while True:
             p.resetDebugVisualizerCamera(cameraDistance= p.getDebugVisualizerCamera(self.client_id)[10], 
                                          cameraYaw= p.getDebugVisualizerCamera(self.client_id)[8], 
                                          cameraPitch= p.getDebugVisualizerCamera(self.client_id)[9], 
                                          cameraTargetPosition= [self.robot.pepper.getPosition()[0], self.robot.pepper.getPosition()[1], 0.5])
         """
-            #for joint_parameter in self.joint_parameters:
-            #    self.robot.pepper.setAngles(
-            #        joint_parameter[1],
-            #        p.readUserDebugParameter(joint_parameter[0]), 1.0
-            #    )
+        """
+        #Used to find new posture for PiLDIM in case we add more.
+            for joint_parameter in self.joint_parameters:
+                self.robot.pepper.setAngles(
+                    joint_parameter[1],
+                    p.readUserDebugParameter(joint_parameter[0]), 1.0
+                )
+        """
             
