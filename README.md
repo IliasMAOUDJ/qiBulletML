@@ -33,6 +33,11 @@ $ python src/DL.py [-s] [-im path_folder] [-h]
     -h, --help                                    Show this help message and exit
     -s, --save                                    Save trained model into a "h5" file
     -im path_folder, --import_image path_folder   Get new images from path_folder
+    
+# for chatBot
+$ python src/train_chatbot.py
+
+*It is possible to add more dialogue options by filling "src/intents.json"
 ```
 
 
