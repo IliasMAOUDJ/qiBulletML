@@ -50,19 +50,17 @@ def main(save=False):
 
     model.add(layers.Conv2D(64, kernel_size=3, activation="relu", input_shape=(240, 320, 3)))
     model.add(layers.Conv2D(32, kernel_size=3, activation="relu"))
+    model.add(layers.MaxPool2D(pool_size=(2, 2)))
+    model.add(layers.Dropout(0.25))
     model.add(layers.Flatten())
     model.add(layers.Dense(2, activation="softmax"))
 
     model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-    model.fit(X_train, y_train, batch_size=5, epochs=10, verbose=1)
-
-    score=model.evaluate(X_test, y_test, verbose=0)
-    print(score)
+    model.fit(X_train, y_train, batch_size=15, epochs=3, verbose=1, validation_data=(X_test, y_test))
 
     if save:
-        model.save("../model/classifier.h5")
-
+        model.save("../model/classifier_V2.h5")
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(
